@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Minhas Categorias - Gerenciador de Finanças{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Minhas Categorias</h1>
+
+    <div class="flex justify-end mb-4">
+        <a href="{{ url_for('transacoes.adicionar_categoria') }}" class="btn-primary">Adicionar Nova Categoria</a>
+    </div>
+
+    {% if categorias %}
+    <div class="card p-6">
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal rounded-lg">
+                        <th class="py-3 px-6 text-left rounded-tl-lg">Nome</th>
+                        <th class="py-3 px-6 text-left">Tipo</th>
+                        <th class="py-3 px-6 text-left rounded-tr-lg">Criado Em</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 text-sm font-light">
+                    {% for categoria in categorias %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="py-3 px-6 text-left whitespace-nowrap">{{ categoria.nome }}</td>
+                        <td class="py-3 px-6 text-left">{{ categoria.tipo | capitalize }}</td>
+                        <td class="py-3 px-6 text-left">{{ categoria.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <p class="text-gray-600 text-center text-lg">Você ainda não tem categorias registradas.</p>
+    <p class="text-center mt-4"><a href="{{ url_for('transacoes.adicionar_categoria') }}"
+            class="text-blue-500 hover:underline">Adicione sua primeira categoria agora!</a></p>
+    {% endif %}
+</div>
+{% endblock %}

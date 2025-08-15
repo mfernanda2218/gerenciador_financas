@@ -1,0 +1,8 @@
+Flask==2.3.2
+Flask-SQLAlchemy==3.0.3
+Flask-Login==0.6.2
+PyMySQL==1.0.2 # Driver MySQL para SQLAlchemy
+mysql-connector-python==8.0.33 # Outra opção de driver MySQL
+SQLAlchemy==2.0.18
+python-dotenv==1.0.0 # Para carregar variáveis de ambiente de um arquivo .env
+```python

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Gerenciador de Finanças{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-full">
+    <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
+        <form method="POST" action="{{ url_for('auth.login') }}">
+            <div class="mb-4">
+                <label for="username" class="block text-gray-700 text-sm font-bold mb-2">Usuário:</label>
+                <input type="text" id="username" name="username" class="form-input" required>
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Senha:</label>
+                <input type="password" id="password" name="password" class="form-input" required>
+            </div>
+            <button type="submit" class="btn-primary w-full">Entrar</button>
+        </form>
+        <p class="text-center text-gray-600 text-sm mt-4">
+            Ainda não tem uma conta? <a href="{{ url_for('auth.register') }}" class="text-blue-500 hover:underline">Registre-se aqui</a>.
+        </p>
+    </div>
+</div>
+{% endblock %}

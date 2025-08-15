@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Minhas Transações - Gerenciador de Finanças{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Minhas Transações</h1>
+
+    <div class="flex justify-end mb-4">
+        <a href="{{ url_for('transacoes.adicionar_transacao') }}" class="btn-primary">Adicionar Nova Transação</a>
+    </div>
+
+    {% if transacoes %}
+    <div class="card p-6">
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal rounded-lg">
+                        <th class="py-3 px-6 text-left rounded-tl-lg">Descrição</th>
+                        <th class="py-3 px-6 text-left">Valor</th>
+                        <th class="py-3 px-6 text-left">Data</th>
+                        <th class="py-3 px-6 text-left">Tipo</th>
+                        <th class="py-3 px-6 text-left">Categoria</th>
+                        <th class="py-3 px-6 text-center rounded-tr-lg">Ações</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 text-sm font-light">
+                    {% for transacao in transacoes %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <td class="py-3 px-6 text-left whitespace-nowrap">{{ transacao.descricao }}</td>
+                        <td class="py-3 px-6 text-left">
+                            <span
+                                class="font-bold {{ 'text-green-600' if transacao.tipo == 'receita' else 'text-red-600' }}">
+                                {{ '+' if transacao.tipo == 'receita' else '-' }} R$ {{ "%.2f"|format(transacao.valor)
+                                }}
+                            </span>
+                        </td>
+                        <td class="py-3 px-6 text-left">{{ transacao.data.strftime('%d/%m/%Y') }}</td>
+                        <td class="py-3 px-6 text-left">{{ transacao.tipo | capitalize }}</td>
+                        <td class="py-3 px-6 text-left">
+                            {% if transacao.category %}
+                            {{ transacao.category.nome }}
+                            {% else %}
+                            N/A
+                            {% endif %}
+                        </td>
+                        <td class="py-3 px-6 text-center">
+                            <div class="flex item-center justify-center space-x-2">
+                                <a href="{{ url_for('transacoes.editar_transacao', transacao_id=transacao.id) }}"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-md text-xs">
+                                    Editar
+                                </a>
+                                <form action="{{ url_for('transacoes.excluir_transacao', transacao_id=transacao.id) }}"
+                                    method="POST"
+                                    onsubmit="return confirm('Tem certeza que deseja excluir esta transação?');">
+                                    <button type="submit" class="btn-danger text-xs">Excluir</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <p class="text-gray-600 text-center text-lg">Você ainda não tem transações registradas.</p>
+    <p class="text-center mt-4"><a href="{{ url_for('transacoes.adicionar_transacao') }}"
+            class="text-blue-500 hover:underline">Comece adicionando uma agora!</a></p>
+    {% endif %}
+</div>
+{% endblock %}

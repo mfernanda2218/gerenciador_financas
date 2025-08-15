@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Gerenciador de Finanças{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Bem-vindo(a), {{ current_user.username }}!</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="card p-6 text-center">
+            <h3 class="text-lg font-semibold text-gray-700">Receitas do Mês</h3>
+            <p class="text-4xl font-bold text-green-600 mt-2">R$ {{ "%.2f"|format(receitas_mes_atual) }}</p>
+        </div>
+        <div class="card p-6 text-center">
+            <h3 class="text-lg font-semibold text-gray-700">Despesas do Mês</h3>
+            <p class="text-4xl font-bold text-red-600 mt-2">R$ {{ "%.2f"|format(despesas_mes_atual) }}</p>
+        </div>
+        <div class="card p-6 text-center">
+            <h3 class="text-lg font-semibold text-gray-700">Saldo do Mês</h3>
+            <p class="text-4xl font-bold {{ 'text-green-600' if saldo_mes_atual >= 0 else 'text-red-600' }} mt-2">
+                R$ {{ "%.2f"|format(saldo_mes_atual) }}
+            </p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        <div class="card">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Últimas Transações</h3>
+            {% if transacoes_recentes %}
+            <ul class="divide-y divide-gray-200">
+                {% for transacao in transacoes_recentes %}
+                <li class="py-3 flex justify-between items-center">
+                    <div>
+                        <p class="text-lg font-medium">{{ transacao.descricao }}</p>
+                        <p class="text-sm text-gray-500">{{ transacao.data.strftime('%d/%m/%Y') }}</p>
+                    </div>
+                    <p
+                        class="text-xl font-semibold {{ 'text-green-600' if transacao.tipo == 'receita' else 'text-red-600' }}">
+                        {{ '+' if transacao.tipo == 'receita' else '-' }} R$ {{ "%.2f"|format(transacao.valor) }}
+                    </p>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="text-right mt-4">
+                <a href="{{ url_for('transacoes.listar_transacoes') }}" class="text-blue-500 hover:underline">Ver todas
+                    as transações</a>
+            </div>
+            {% else %}
+            <p class="text-gray-600 text-center">Nenhuma transação recente para exibir.</p>
+            <p class="text-center mt-2"><a href="{{ url_for('transacoes.adicionar_transacao') }}"
+                    class="text-blue-500 hover:underline">Adicionar sua primeira transação</a></p>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Despesas por Categoria (Mês Atual)</h3>
+            {% if despesas_por_categoria %}
+            <ul class="divide-y divide-gray-200">
+                {% for categoria, total_gasto in despesas_por_categoria %}
+                <li class="py-3 flex justify-between items-center">
+                    <p class="text-lg font-medium">{{ categoria }}</p>
+                    <p class="text-xl font-semibold text-red-600">R$ {{ "%.2f"|format(total_gasto) }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+            <!-- Placeholder para futuro gráfico -->
+            <div class="mt-4 bg-gray-50 p-4 rounded-lg text-center text-gray-500">
+                Aqui você pode integrar um gráfico (ex: Chart.js) para visualizar essas despesas!
+            </div>
+            {% else %}
+            <p class="text-gray-600 text-center">Nenhuma despesa registrada para o mês atual.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
