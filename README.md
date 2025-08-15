@@ -44,10 +44,6 @@ SQLAlchemy - Toolkit Python SQL e ORM
 
 Flask-Login - Gerenciamento de sessões de usuário
 
-Werkzeug - Utilitários para hashing de senhas
-
-Python-Dotenv - Para carregar variáveis de ambiente
-
 Banco de Dados:
 
 SQLite3 - Banco de dados leve baseado em arquivo
@@ -57,8 +53,6 @@ Frontend:
 HTML5
 
 CSS3
-
-Tailwind CSS - Framework CSS utilitário para estilização rápida
 
 Jinja2 - Motor de templates do Flask
 
